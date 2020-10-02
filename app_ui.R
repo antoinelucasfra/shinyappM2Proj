@@ -1,16 +1,40 @@
+# TODO LIST
+#'-régler problème reactive et rond gris
+#'régler problème énonciation des graphs
+#'régler prblm add code source qq part
+#'
+#'
+#'
+#'
+#'
+
+source("./suicide.r")
+
+#library 
+
+library(shiny)
+library(shinydashboard)
+library(tidyverse)
+library(leaflet)
+library(shinyWidgets)
+library(plotly)
+library(readxl)
+library(tidyverse)
+library(FactoMineR)
+library(Factoshiny)
+
 #this is the script for the ui part of the app
 
 ui <- shinyUI(
-  navbarPage("Suicide map",
+  navbarPage("SuicideRY",
              
              tabPanel("Suicide mapper",
-                      sidebarPanel(
-                        selectInput(inputId = "idYear", label = "Year Selection", choices = seq(1986,2016,1))
-                        
-                      ),
-                      
                       leafletOutput("mymap"),
+                        
+                        selectInput(inputId = "idYear", label = "Annees", 
+                                    choices = seq(1986,2016,1))
                       
+
                       #add a legend for suicide amount :
                       
                       
@@ -23,21 +47,49 @@ ui <- shinyUI(
                         sidebarPanel(
                           
                           pickerInput("country_select", "Country:",
-                                      choices = "albania",
-                                      multiple = TRUE), 
+                                      choices = levels(suicide$country),
+                                      multiple = FALSE), 
                           
-                          pickerInput("variable_select",
-                                      "Variable:",
-                                      choices = c("Sex","Age","Generation"),
-                                      selected = "Sex"
-                          ),
+                          checkboxGroupButtons("sex_select","Sex:",
+                                               choices = levels(suicide$sex)),
                           
-                          "Select country, year, category and age class"
+                          checkboxGroupButtons("age_select","Age:",
+                                               choices = levels(suicide$age)),
+                          
+                          checkboxGroupButtons("generation_select","Generation:",
+                                               choices = levels(suicide$generation)),
+                          
+                          
+                          "Select the country, sex, age class and generation of your interest."
                           
                         ),
                         mainPanel(
-                          plotlyOutput("plot_selected")
+                          plotOutput("plot_selected")
+                        )
+                      )
+                      
+             ),
+             
+             tabPanel("Factorial Analysis",
+                      
+                      sidebarLayout(
+                        sidebarPanel(
                           
+                          checkboxGroupButtons("sex_select","Sex:",
+                                               choices = levels(suicide$sex)),
+                          
+                          checkboxGroupButtons("age_select","Age:",
+                                               choices = levels(suicide$age)),
+                          
+                          checkboxGroupButtons("generation_select","Generation:",
+                                               choices = levels(suicide$generation)),
+                          
+                          
+                          "Select the country, sex, age class and generation of your interest."
+                          
+                        ),
+                        mainPanel(
+                          plotOutput("plot_selected")
                         )
                       )
                       
@@ -54,12 +106,6 @@ ui <- shinyUI(
                       )
   )
 )
-
-
-
-
-
-
 
 
 
