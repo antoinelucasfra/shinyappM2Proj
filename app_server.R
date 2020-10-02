@@ -30,7 +30,7 @@ server <- function(input,output,session){
             fillOpacity = 1,
             label = paste("Pays :", suicide_country_cumul$country[suicide_country_cumul$year == input$idYear],"; Nombre de suicide :", suicide_country_cumul$total_suicide[suicide_country_cumul$year == input$idYear]),
             labelOptions = labelOptions(textsize = "15px", direction = "auto")
-         )
+         ) 
       #les cercles que l'on veux implémenter sur la carte 
       # %>%
       #   addCircles(
@@ -84,6 +84,13 @@ server <- function(input,output,session){
    
    
    #about panel
+   
+   url <- a("Github repo for the source code of the app",
+            href="https://github.com/antoinelucasfra/shinyappM2Proj")
+   
+   output$tab <- renderUI({
+      tagList("URL link:", url)
+   })
    
 }
  

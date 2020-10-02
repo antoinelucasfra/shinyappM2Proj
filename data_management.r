@@ -3,7 +3,6 @@
 ## Jeu de donnes 3 : les suicides
 # https://www.kaggle.com/russellyates88/suicide-rates-overview-1985-to-2016
 
-
 ### Cleanage des donnees
 
 suicide = read.csv("suicide_coord.csv", sep = ";", header = T)
@@ -11,7 +10,9 @@ str(suicide)
 
 suicide$country = as.factor(suicide$country)
 suicide$sex = as.factor(suicide$sex)
-suicide$age = as.factor(suicide$age)
+suicide$age = as.factor( suicide$age)
+suicide$age <- factor(suicide$age,levels = c("5-14 years","15-24 years",
+                                             "25-34 years","35-54 years","55-74 years","75+ years"))
 suicide$generation = as.factor(suicide$generation)
 suicide$Capital.Major.City = as.factor(suicide$Capital.Major.City)
 suicide$Latitude = as.integer(suicide$Latitude)
@@ -20,6 +21,19 @@ suicide$Longitude = as.integer(suicide$Longitude)
 str(suicide)
 
 ### Graphes par pays
+
+#le jeu de données fixe qui donnera la courbe totale de suicide pour chaque pays
+total_df <- suicide %>% 
+  group_by(year) %>% 
+  filter(country == input$country_select ) %>% 
+  summarise(total_suicide = sum(suicides_no))
+
+#ensuite on veux ajouter sur le même graphique une SEULE courbe selon les modalitées de sélection des inputs :
+#sex,age,generation et avec un changement dynamique de la seconde courbe selon les inputs sélectionnés
+
+
+
+
 
 # Ajouter les taux de suicide pour 100 000 habitants (pour pouvoir comparer des pays qui n'ont pas le mm nb d'habs)
 

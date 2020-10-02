@@ -26,7 +26,7 @@ library(Factoshiny)
 #this is the script for the ui part of the app
 
 ui <- shinyUI(
-  navbarPage("SuicideRY",
+  navbarPage("Shiny_SuicideR",
              
              tabPanel("Suicide mapper",
                       leafletOutput("mymap"),
@@ -75,34 +75,36 @@ ui <- shinyUI(
                       sidebarLayout(
                         sidebarPanel(
                           
-                          checkboxGroupButtons("sex_select","Sex:",
-                                               choices = levels(suicide$sex)),
+                          pickerInput("variable_select","Selection of variable:",
+                                               choices = colnames(suicide)),
                           
-                          checkboxGroupButtons("age_select","Age:",
-                                               choices = levels(suicide$age)),
-                          
-                          checkboxGroupButtons("generation_select","Generation:",
-                                               choices = levels(suicide$generation)),
+                          pickerInput("var_supp","Choice of supplementary variable:",
+                                               choices = colnames(suicide)),
                           
                           
-                          "Select the country, sex, age class and generation of your interest."
+                          "Select the variable of your interest for principal component analysis."
                           
                         ),
+                        
                         mainPanel(
-                          plotOutput("plot_selected")
+                          plotOutput("plot_pca_indiv"),
+                          plotOutput("plot_pca_var")
                         )
                       )
                       
              ),
              
              tabPanel("Data",
+                      
+                      h2("To explore raw data"),
                       dataTableOutput("dataTable")
              ),
              
              tabPanel("About this app",
                       
                       h2("The author are : Zoe Wante, Chloé Tellier, Antoine Lucas"),
-                      h3("This app was built in the context of a R programmation course")
+                      h3("This app was built in the context of an R programmation course"),
+                      uiOutput("tab")
                       )
   )
 )
