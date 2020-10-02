@@ -5,7 +5,7 @@
 
 ### Cleanage des donnees
 
-suicide = read.csv("suicide_coord.csv", sep = ";", header = T)
+suicide = read.csv("./data/suicide_coord.csv", sep = ";", header = T)
 str(suicide)
 
 suicide$country = as.factor(suicide$country)
@@ -22,17 +22,45 @@ str(suicide)
 
 ### Graphes par pays
 
+#fonctions de graphs par pays
+
 #le jeu de données fixe qui donnera la courbe totale de suicide pour chaque pays
 total_df <- suicide %>% 
-  group_by(year) %>% 
-  filter(country == input$country_select ) %>% 
-  summarise(total_suicide = sum(suicides_no))
+  group_by(year,country) %>% 
+  filter(country == "Albania" ) %>%
+  summarise(total_suicide = sum(suicides_no)) %>% 
+  ggplot(aes(x=year,y=total_suicide)) +
+  geom_point() 
 
 #ensuite on veux ajouter sur le même graphique une SEULE courbe selon les modalitées de sélection des inputs :
 #sex,age,generation et avec un changement dynamique de la seconde courbe selon les inputs sélectionnés
 
+#courbe avec les valeurs par sex 
 
+sex_df <- suicide %>% 
+  group_by(year,country,sex) %>%
+  filter(country == "Albania") %>% 
+  summarise(total_suicide = sum(suicides_no))
 
+total_df %>% ggplot(aes(x = year, y = total_suicide)) + 
+  geom_line(data = total_df) + 
+  # geom_line(data = sex_df) +
+  theme_bw()
+
+#courbe avec les valeurs par âge 
+
+suicide %>% 
+  group_by(year,country,age) %>% 
+  filter(country == "Albania") %>%
+  summarise(total_suicide = sum(suicides_no)) %>% 
+  ggplot(aes(x=year,y=total_suicide)) +
+  geom_point() +
+  theme_bw()
+
+#courbe avec les valeurs par generation 
+
+suicide %>% 
+  group_by(year,country,age)
 
 
 # Ajouter les taux de suicide pour 100 000 habitants (pour pouvoir comparer des pays qui n'ont pas le mm nb d'habs)
@@ -178,3 +206,36 @@ missing_countries_vector = total_countries_vector[!countries_dispo_or_not]
 missing_countries = as.data.frame(missing_countries_vector)
 missing_countries$latitude = total_countries$Latitude[!countries_dispo_or_not]
 missing_countries$longitude = total_countries$Longitude[!countries_dispo_or_not]
+
+# suicide %>% group_by(year,country) %>% 
+#   summarise(total_suicide_100k = sum(suicides.100k.pop))
+# 
+# suicide_pal <- colorBin("Blues", domain = suicide$suicides.100k.pop)
+
+
+world <-  read_sf("./data/world")
+world$NAME[209] <- c("United States of America")
+# Comparer les noms des pays à la main pour en récupérér le plus possible
+
+### Merge des données
+world <- world %>%
+  filter(world$NAME %in% dta$Country)
+dta <- dta %>% 
+  filter(dta$Country %in% world$NAME)
+dta_final <- merge(dta, world, by.x = "Country", by.y = "NAME")
+dta_final2 <- st_sf(dta_final)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

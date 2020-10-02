@@ -1,14 +1,14 @@
 # TODO LIST
-#'-régler problème reactive et rond gris
 #'régler problème énonciation des graphs
 #'régler prblm add code source qq part
+#'régler problème bornes slider
 #'
 #'
 #'
 #'
 #'
 
-source("./suicide.r")
+source("./data_management")
 
 #library 
 
@@ -22,6 +22,7 @@ library(readxl)
 library(tidyverse)
 library(FactoMineR)
 library(Factoshiny)
+library(sf)
 
 #this is the script for the ui part of the app
 
@@ -29,13 +30,12 @@ ui <- shinyUI(
   navbarPage("Shiny_SuicideR",
              
              tabPanel("Suicide mapper",
-                      leafletOutput("mymap"),
-                        
-                        selectInput(inputId = "idYear", label = "Annees", 
-                                    choices = seq(1986,2016,1))
+                      selectInput(inputId = "idYear", label = "Annees", 
+                                  choices = seq(1986,2016,1)),
+                      leafletOutput("mymap")
                       
-
-                      #add a legend for suicide amount :
+                      #add a legend for suicide amount (country colored with gradient of tiles/polygons to add)
+                      
                       
                       
                       
@@ -48,66 +48,79 @@ ui <- shinyUI(
                           
                           pickerInput("country_select", "Country:",
                                       choices = levels(suicide$country),
-                                      multiple = FALSE), 
+                                      multiple = FALSE),
                           
-                          checkboxGroupButtons("sex_select","Sex:",
-                                               choices = levels(suicide$sex)),
+                          # checkboxGroupButtons("sex_select","Sex:",
+                          #                      choices = levels(suicide$sex)),
+                          # 
+                          # checkboxGroupButtons("age_select","Age:",
+                          #                      choices = levels(suicide$age)),
+                          # 
+                          # checkboxGroupButtons("generation_select","Generation:",
+                          #                      choices = levels(suicide$generation)),
                           
-                          checkboxGroupButtons("age_select","Age:",
-                                               choices = levels(suicide$age)),
                           
-                          checkboxGroupButtons("generation_select","Generation:",
-                                               choices = levels(suicide$generation)),
-                          
-                          
-                          "Select the country, sex, age class and generation of your interest."
+                          "Select the country of your interest to have a clue on suicide evolution through time between different classes"
                           
                         ),
                         mainPanel(
-                          plotOutput("plot_selected")
+                            plotlyOutput("plot_selected_sex"),
+                            plotlyOutput("plot_selected_age"),
+                            plotlyOutput("plot_selected_generation")
+                          
+                          
+                          
                         )
                       )
                       
              ),
              
-             tabPanel("Factorial Analysis",
+             tabPanel("Country Ranking",
                       
                       sidebarLayout(
                         sidebarPanel(
                           
-                          pickerInput("variable_select","Selection of variable:",
-                                               choices = colnames(suicide)),
+                          sliderInput("country_number_select",
+                                      "Select the number of country you want in the top:",
+                                      min = 1, max = length(levels(suicide$country)),value = 5),
                           
-                          pickerInput("var_supp","Choice of supplementary variable:",
-                                               choices = colnames(suicide)),
-                          
-                          
-                          "Select the variable of your interest for principal component analysis."
-                          
-                        ),
+                          sliderInput("date_length_select",
+                                      "Select the interval of time:",
+                                      min = 1985, max = 2016, value = c(1985,2016))
+                            ),
                         
                         mainPanel(
-                          plotOutput("plot_pca_indiv"),
-                          plotOutput("plot_pca_var")
+                          plotlyOutput("evolution_increase"),
+                          plotlyOutput("evolution_decrease"),
+                          tableOutput("table_increase"),
+                          tableOutput("table_decrease")
                         )
                       )
-                      
              ),
              
-             tabPanel("Data",
+             
+             tabPanel("Raw data",
                       
-                      h2("To explore raw data"),
-                      dataTableOutput("dataTable")
+                      h2("Dataframe to explore raw data"),
+                      dataTableOutput("dataTable_raw")
              ),
              
-             tabPanel("About this app",
+             tabPanel("About",
                       
-                      h2("The author are : Zoe Wante, Chloé Tellier, Antoine Lucas"),
-                      h3("This app was built in the context of an R programmation course"),
+                      h3("This application was built for a project during a course of Data Science specialisation in Agrocampus Ouest"),
+                      HTML("<br>"),
+                      hr(),
+                      HTML("<br>"),
+                      hr(),
+                      h5("If you want to consult the source code, please refer to the following link :"),
                       uiOutput("tab")
+                      
+                      
+                      
                       )
+             
+             )
   )
-)
 
 
 
