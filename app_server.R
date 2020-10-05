@@ -48,6 +48,12 @@ server <- function(input,output,session){
    
    #plot panel
    
+   # a la place de faire les graphs et calculer a chaque fois ça :
+   # suicide %>% group_by(country,year,sex) %>% 
+   #    filter(country == input$country_select) %>%
+   #    summarise(suicide_100k = sum(suicides.100k.pop))
+   # on peux utiliser une expression reactive en suavegardant ces lignes et en appelant la variable après
+   
    output$plot_selected_sex <- renderPlotly({
       
       suicide %>% group_by(country,year,sex) %>% 

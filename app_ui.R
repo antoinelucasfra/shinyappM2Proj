@@ -2,13 +2,10 @@
 #'régler problème énonciation des graphs
 #'régler prblm add code source qq part
 #'régler problème bornes slider
-#'
-#'
-#'
-#'
+#'mettre couleurs sur la carte au lieu de ronds avec une petite légende nuancier
 #'
 
-source("./data_management")
+# source("./data_management.r")
 
 #library 
 
@@ -22,7 +19,7 @@ library(readxl)
 library(tidyverse)
 library(FactoMineR)
 library(Factoshiny)
-library(sf)
+# library(sf)
 
 #this is the script for the ui part of the app
 
