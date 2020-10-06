@@ -4,7 +4,9 @@
 #'régler problème bornes slider
 #'mettre couleurs sur la carte au lieu de ronds avec une petite légende nuancier
 #'
+#'
 
+#execution of data management
 # source("./data_management.r")
 
 #library 
@@ -22,6 +24,9 @@ library(Factoshiny)
 # library(sf)
 
 #this is the script for the ui part of the app
+
+########### COUCOU C ZOEEEEEEEEEEEEEEEEEEEEEEEE
+
 
 ui <- shinyUI(
   navbarPage("Shiny_SuicideR",
@@ -119,6 +124,6 @@ ui <- shinyUI(
              )
   )
 
-
+#ZOE
 
 
