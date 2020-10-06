@@ -92,9 +92,9 @@ ui <- shinyUI(
                             ),
                         
                         mainPanel(
-                          plotlyOutput("evolution_increase"),
-                          plotlyOutput("evolution_decrease"),
+                          h3("increasing country"),
                           tableOutput("table_increase"),
+                          h3("decreasing country"),
                           tableOutput("table_decrease")
                         )
                       )
