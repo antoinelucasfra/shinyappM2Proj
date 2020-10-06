@@ -38,14 +38,16 @@ server <- function(input,output,session)
    
    output$plot_selected_age <- renderPlotly({
 
-      suicide %>% group_by(country,year,age) %>%
-         filter(country == input$country_select) %>%
-         summarise(suicide_100k = sum(suicides.100k.pop)) %>%
-         ggplot(aes(x=year,y=suicide_100k, color = age)) + geom_line() +
-         ggtitle("Evolution of the number of suicide per 100k habs between age categories.") +
-         scale_color_viridis_d() +
-         labs(y = "Number of suicide per 100k habs") +
-         theme_bw()
+      p <- suicide %>% group_by(country,year,age) %>%
+           filter(country == input$country_select) %>%
+           summarise(suicide_100k = sum(suicides.100k.pop)) %>%
+           ggplot(aes(x=year,y=suicide_100k, color = age)) + geom_line() +
+           ggtitle("Evolution of the number of suicide per 100k habs between age categories.") +
+           scale_color_viridis_d() +
+           labs(y = "Number of suicide per 100k habs") +
+           theme_bw()
+      p <- ggplotly(p)
+      p
 
    })
    

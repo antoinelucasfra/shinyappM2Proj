@@ -13,11 +13,9 @@ ui <- shinyUI(
         
                       sidebarLayout(
                         sidebarPanel(
-                          
                           pickerInput("country_select", "Country:",
                                       choices = levels(suicide$country),
                                       multiple = FALSE),
-                          
                           "Select the country of your interest to have a clue on suicide evolution through time between different classes"
                         ),
                         
