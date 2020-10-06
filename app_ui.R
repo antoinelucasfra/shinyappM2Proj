@@ -1,32 +1,4 @@
-# TODO LIST
-#'régler problème énonciation des graphs
-#'régler prblm add code source qq part
-#'régler problème bornes slider
-#'mettre couleurs sur la carte au lieu de ronds avec une petite légende nuancier
-#'
-#'
-
-#execution of data management
-# source("./data_management.r")
-
-#library 
-
-library(shiny)
-library(shinydashboard)
-library(tidyverse)
-library(leaflet)
-library(shinyWidgets)
-library(plotly)
-library(readxl)
-library(tidyverse)
-library(FactoMineR)
-library(Factoshiny)
-# library(sf)
-
-#this is the script for the ui part of the app
-
-########### COUCOU C ZOEEEEEEEEEEEEEEEEEEEEEEEE
-
+# This is the script for the ui part of the app
 
 ui <- shinyUI(
   navbarPage("Shiny_SuicideR",
@@ -35,16 +7,10 @@ ui <- shinyUI(
                       selectInput(inputId = "idYear", label = "Annees", 
                                   choices = seq(1986,2016,1)),
                       leafletOutput("mymap")
-                      
-                      #add a legend for suicide amount (country colored with gradient of tiles/polygons to add)
-                      
-                      
-                      
-                      
              ),
              
              tabPanel("Region plots",
-                      
+        
                       sidebarLayout(
                         sidebarPanel(
                           
@@ -52,36 +18,21 @@ ui <- shinyUI(
                                       choices = levels(suicide$country),
                                       multiple = FALSE),
                           
-                          # checkboxGroupButtons("sex_select","Sex:",
-                          #                      choices = levels(suicide$sex)),
-                          # 
-                          # checkboxGroupButtons("age_select","Age:",
-                          #                      choices = levels(suicide$age)),
-                          # 
-                          # checkboxGroupButtons("generation_select","Generation:",
-                          #                      choices = levels(suicide$generation)),
-                          
-                          
                           "Select the country of your interest to have a clue on suicide evolution through time between different classes"
-                          
                         ),
+                        
                         mainPanel(
                             plotlyOutput("plot_selected_sex"),
                             plotlyOutput("plot_selected_age"),
                             plotlyOutput("plot_selected_generation")
-                          
-                          
-                          
                         )
                       )
-                      
              ),
              
              tabPanel("Country Ranking",
                       
                       sidebarLayout(
                         sidebarPanel(
-                          
                           sliderInput("country_number_select",
                                       "Select the number of country you want in the top:",
                                       min = 1, max = length(levels(suicide$country)),value = 5),
@@ -102,13 +53,11 @@ ui <- shinyUI(
              
              
              tabPanel("Raw data",
-                      
                       h2("Dataframe to explore raw data"),
                       dataTableOutput("dataTable_raw")
              ),
              
              tabPanel("About",
-                      
                       h3("This application was built for a project during a course of Data Science specialisation in Agrocampus Ouest"),
                       HTML("<br>"),
                       hr(),
@@ -116,14 +65,6 @@ ui <- shinyUI(
                       hr(),
                       h5("If you want to consult the source code, please refer to the following link :"),
                       uiOutput("tab")
-                      
-                      
-                      
-                      )
-             
+              )
              )
   )
-
-#ZOE
-
-
