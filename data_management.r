@@ -13,6 +13,8 @@ library(tidyverse)
 library(FactoMineR)
 library(Factoshiny)
 library(glue)
+library(rgdal)
+library(sf)
 
 # Cleanage des donnees
 
@@ -54,3 +56,8 @@ suicide_country_cumul = suicide %>% group_by(country, year, Capital.Major.City, 
 # missing_countries = as.data.frame(missing_countries_vector)
 # missing_countries$latitude = total_countries$Latitude[!countries_dispo_or_not]
 # missing_countries$longitude = total_countries$Longitude[!countries_dispo_or_not]
+
+
+
+
+

@@ -10,19 +10,23 @@ ui <- shinyUI(
              ),
              
              tabPanel("Region plots",
-        
+                      
                       sidebarLayout(
                         sidebarPanel(
                           pickerInput("country_select", "Country:",
-                                      choices = levels(suicide$country),
+                                      choices = c("Monde",levels(suicide$country)),
                                       multiple = FALSE),
                           "Select the country of your interest to have a clue on suicide evolution through time between different classes"
                         ),
                         
                         mainPanel(
-                            plotlyOutput("plot_selected_sex"),
-                            plotlyOutput("plot_selected_age"),
-                            plotlyOutput("plot_selected_generation")
+                          plotlyOutput("plot_global"),
+                          actionButton("sex", "Print by sex"),
+                          plotlyOutput("plot_selected_sex"),
+                          actionButton("age", "Print by age"),
+                          plotlyOutput("plot_selected_age"),
+                          actionButton("generation", "Print by generation"),
+                          plotlyOutput("plot_selected_generation")
                         )
                       )
              ),
@@ -38,27 +42,38 @@ ui <- shinyUI(
                           sliderInput("date_length_select",
                                       "Select the interval of time:",
                                       min = 1985, max = 2016, value = c(1985,2016))
-                            ),
+                        ),
                         
                         mainPanel(
                           textOutput("high_rank"),
                           tableOutput("table_high"),
                           textOutput("low_rank"),
-                          tableOutput("table_low")
+                          tableOutput("table_low"),
+                          downloadButton(outputId = "download_data", 
+                                         label = "Download Selected Data")
                         )
                       )
              ),
              
+             tabPanel("Prediction",
+                      h3("This is a tool for approximative prediction of the amount of suicide in the next year."),
+                      tableOutput("predict_table"),
+                      plotOutput("predict_plot")
+                      
+             ),
              
              tabPanel("Raw data",
-                      h2("Dataframe to explore raw data"),
+                      h2("Raw data exploration"),
                       dataTableOutput("dataTable_raw")
              ),
              
              tabPanel("About",
                       h4("This application was built for a project during a course of Data Science specialisation in Agrocampus Ouest"),
+                      h4("The data are available at the following link:"),
+                      uiOutput("link_data"),
                       h4("If you want to consult the source code, please refer to the following link :"),
-                      uiOutput("tab")
-              )
+                      uiOutput("git_repo")
              )
+             
   )
+)
