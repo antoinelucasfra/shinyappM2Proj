@@ -46,7 +46,6 @@ server <- function(input,output,session)
             labs(y = "Number of suicide per 100k habs") +
             theme_bw()
          
-      }
    })
    
    observeEvent(input$sex, {output$plot_selected_sex <- renderPlotly({
