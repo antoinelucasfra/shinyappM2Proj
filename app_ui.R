@@ -13,17 +13,19 @@ ui <- shinyUI(
                       
                       sidebarLayout(
                         sidebarPanel(
-                          
                           pickerInput("country_select", "Country:",
-                                      choices = levels(suicide$country),
+                                      choices = c("Monde",levels(suicide$country)),
                                       multiple = FALSE),
-                          
                           "Select the country of your interest to have a clue on suicide evolution through time between different classes"
                         ),
                         
                         mainPanel(
+                          plotlyOutput("plot_global"),
+                          actionButton("sex", "Print by sex"),
                           plotlyOutput("plot_selected_sex"),
+                          actionButton("age", "Print by age"),
                           plotlyOutput("plot_selected_age"),
+                          actionButton("generation", "Print by generation"),
                           plotlyOutput("plot_selected_generation")
                         )
                       )
