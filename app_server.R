@@ -1,3 +1,6 @@
+source("./data_management.r")
+
+
 server <- function(input,output,session)
 {
    
@@ -162,7 +165,7 @@ server <- function(input,output,session)
     output$low_rank <- renderText({
        paste("This is the top ",
              input$country_number_select,
-             "country with the lowest suicide rates (per 100k habs) between",
+              "country with the lowest suicide rates (per 100k habs) between",
              input$date_length_select[1],"and",input$date_length_select[2])
     })
     
