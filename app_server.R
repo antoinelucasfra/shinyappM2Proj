@@ -36,6 +36,7 @@ server <- function(input,output,session)
          
       })
    
+
    output$plot_selected_age <- renderPlotly({
 
       suicide %>% group_by(country,year,age) %>%
@@ -65,16 +66,35 @@ server <- function(input,output,session)
    
    ### Country ranking panel
    
-   output$table_increase <- renderTable({
-      suicide
-   })
+   # years <- reactive({
+   #    seq(input$country_number_select[1], input$country_number_select[2], by = 1)
+   # })
    
-   output$table_decrease <- renderTable({
-      
-      suicide %>% group_by(year,country) %>% 
-         filter(year >= input$date_length_select & year <= input$date_length_select) %>%
-         summarise(total_suicide100k = sum(suicides.100k.pop)) %>%
-         dplyr::arrange(total_suicide100k) %>% 
+   output$high_rank<- renderText(({
+      paste("This is the top ",input$country_number_select,"country with the highest suicide rates (per 100k habs) between",input$date_length_select[1],"and",input$date_length_select[2])
+   }))
+   
+    output$table_high <- renderTable({
+       suicide %>% group_by(year,country) %>% 
+          # filter(year %in% years()) %>%
+          filter(year >= input$date_length_select[1] & year <= input$date_length_select[2]) %>%
+          
+          summarise(total_suicide100k = sum(suicides.100k.pop)) %>%
+          dplyr::arrange(desc(total_suicide100k)) %>% 
+          ungroup() %>%
+          slice(1:input$country_number_select)
+   })
+    
+    output$low_rank <- renderText(({
+       paste("This is the top ",input$country_number_select,"country with the lowest suicide rates (per 100k habs) between",input$date_length_select[1],"and",input$date_length_select[2])
+    }))
+    
+    output$table_low <- renderTable({
+       suicide %>% group_by(year,country) %>% 
+          filter(year >= input$date_length_select & year <= input$date_length_select) %>%
+          ungroup() %>% group_by(country) %>% 
+          summarise(total_suicide100k = sum(suicides.100k.pop)) %>%
+          dplyr::arrange(total_suicide100k) %>% 
          ungroup() %>%
          slice(1:input$country_number_select)
    })
@@ -97,5 +117,5 @@ server <- function(input,output,session)
 }
 
 
-
 shinyApp(ui,server)
+
