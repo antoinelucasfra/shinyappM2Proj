@@ -126,27 +126,23 @@ server <- function(input,output,session)
    
    #reactive definition
    
-   rank_calcul <- reactive({
-      suicide %>% group_by(year,country) %>% 
-         filter(year >= input$date_length_select[1] & year <= input$date_length_select[2]) %>%
-         summarise(total_suicide100k = sum(suicides.100k.pop)) 
-   })
-   
    low <- reactive({
       suicide %>% group_by(year,country) %>% 
          filter(year >= input$date_length_select[1] & year <= input$date_length_select[2]) %>%
-         summarise(total_suicide100k = sum(suicides.100k.pop)) %>% 
-         dplyr::arrange(total_suicide100k) %>%  
-         ungroup() %>%
+         summarise(total_suicide100k = sum(suicides.100k.pop)) %>% ungroup() %>% 
+         group_by(country) %>% 
+         summarise(mean_year = mean(total_suicide100k)) %>% 
+         dplyr::arrange(mean_year) %>%
          slice(1:input$country_number_select)
    })
    
    high <- reactive({
       suicide %>% group_by(year,country) %>% 
          filter(year >= input$date_length_select[1] & year <= input$date_length_select[2]) %>%
-         summarise(total_suicide100k = sum(suicides.100k.pop)) %>% 
-         dplyr::arrange(desc(total_suicide100k)) %>%  
-         ungroup() %>%
+         summarise(total_suicide100k = sum(suicides.100k.pop)) %>% ungroup() %>% 
+         group_by(country) %>% 
+         summarise(mean_year = mean(total_suicide100k)) %>% 
+         dplyr::arrange(desc(mean_year)) %>%
          slice(1:input$country_number_select)
    })
    
@@ -189,8 +185,6 @@ server <- function(input,output,session)
     )
     
     ### Prediction panel
-    
-    
     
     ### Data panel
     
