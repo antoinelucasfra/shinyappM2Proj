@@ -16,18 +16,21 @@ ui <- shinyUI(
                           pickerInput("country_select", "Country:",
                                       choices = c("Monde",levels(suicide$country)),
                                       multiple = FALSE),
-                          "Select the country of your interest to have a clue on suicide evolution through time between different classes"
+                          "Select the country of your interest to have 
+                          a clue on suicide evolution through time between different factors."
                         ),
                         
                         mainPanel(
-                          plotlyOutput("plot_global"),
-                          actionButton("sex", "Print by sex"),
-                          plotlyOutput("plot_selected_sex"),
-                          actionButton("age", "Print by age"),
-                          plotlyOutput("plot_selected_age"),
-                          actionButton("generation", "Print by generation"),
-                          plotlyOutput("plot_selected_generation")
-                        )
+                          tabsetPanel(id = "main panel",
+                                      tabPanel("Global Vision", 
+                                               plotlyOutput("plot_global")),
+                                      tabPanel("By sex",
+                                               plotlyOutput("plot_selected_sex")),
+                                      tabPanel("By age",
+                                               plotlyOutput("plot_selected_age")),
+                                      tabPanel("By generation",
+                                               plotlyOutput("plot_selected_generation"))
+                          ))
                       )
              ),
              
@@ -35,13 +38,15 @@ ui <- shinyUI(
                       
                       sidebarLayout(
                         sidebarPanel(
-                          sliderInput("country_number_select",
-                                      "Select the number of country you want in the top:",
-                                      min = 1, max = length(levels(suicide$country)),value = 5),
+                          numericInput("country_number_select",
+                                       "Select the number of country you want in the top:", value = 5, min = 1, 
+                                       max = length(unique(suicide$country)), step = NA),
                           
                           sliderInput("date_length_select",
                                       "Select the interval of time:",
-                                      min = 1985, max = 2016, value = c(1985,2016))
+                                      min = 1985, max = 2016, value = c(1985,2016)),
+                          "Select the options to have an idea on the suicide country rankings."
+                          
                         ),
                         
                         mainPanel(

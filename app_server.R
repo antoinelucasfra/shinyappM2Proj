@@ -1,3 +1,6 @@
+source("./data_management.r")
+
+
 server <- function(input,output,session)
 {
    
@@ -30,97 +33,96 @@ server <- function(input,output,session)
       if (input$country_select == "Monde"){
          suicide %>% group_by(year) %>% 
             summarise(suicide_100k = sum(suicides.100k.pop)) %>% 
-            ggplot(aes(x=year,y=suicide_100k)) + geom_line(size = 1.5) +
-            ggtitle("Evolution of the number of suicide per 100k habs in total") +
+            ggplot(aes(x=year,y=suicide_100k)) + geom_line(size = 2) +
+            ggtitle("Evolution of the number of suicide per 100k habs") +
             scale_color_viridis_d() +
             labs(y = "Number of suicide per 100k habs") +
-            theme_bw()
+            theme_bw() 
       }
       else { 
          suicide %>% group_by(country, year) %>% 
             filter(country == input$country_select) %>%
             summarise(suicide_100k = sum(suicides.100k.pop)) %>% 
-            ggplot(aes(x=year,y=suicide_100k)) + geom_line(size = 1.5) +
-            ggtitle("Evolution of the number of suicide per 100k habs in total") +
+            ggplot(aes(x=year,y=suicide_100k)) + geom_line(size = 2) +
+            ggtitle("Evolution of the number of suicide per 100k habs") +
             scale_color_viridis_d() +
             labs(y = "Number of suicide per 100k habs") +
-            theme_bw()
-         }
-      })
+            theme_bw() 
+         
+      }
+   })
    
-   observeEvent(input$sex, {output$plot_selected_sex <- renderPlotly({
-      
+   output$plot_selected_sex <- renderPlotly({
       if (input$country_select == "Monde"){
          suicide %>% group_by(year,sex) %>% 
             summarise(suicide_100k = sum(suicides.100k.pop)) %>% 
-            ggplot(aes(x=year,y=suicide_100k, color = sex)) + geom_line(size = 1.5) +
+            ggplot(aes(x=year,y=suicide_100k, color = sex)) + geom_line(size = 2) +
             ggtitle("Evolution of the number of suicide per 100k habs between genders.") +
             scale_color_viridis_d() +
             labs(y = "Number of suicide per 100k habs") +
-            theme_bw()
+            theme_bw() 
       }
       else {
+         
          suicide %>% group_by(country,year,sex) %>% 
             filter(country == input$country_select) %>%
             summarise(suicide_100k = sum(suicides.100k.pop)) %>% 
-            ggplot(aes(x=year,y=suicide_100k, color = sex)) + geom_line(size = 1.5) +
+            ggplot(aes(x=year,y=suicide_100k, color = sex)) + geom_line(size = 2) +
             ggtitle("Evolution of the number of suicide per 100k habs between genders.") +
             scale_color_viridis_d() +
             labs(y = "Number of suicide per 100k habs") +
-            theme_bw()
+            theme_bw() 
       }
-   })})
+   })
    
-   
-   observeEvent(input$age, {output$plot_selected_age <- renderPlotly({
+   output$plot_selected_age <- renderPlotly({
       
       if (input$country_select == "Monde"){
          suicide %>% group_by(year,age) %>% 
             summarise(suicide_100k = sum(suicides.100k.pop)) %>% 
-            ggplot(aes(x=year,y=suicide_100k, color = age)) + geom_line(size = 1.5) +
+            ggplot(aes(x=year,y=suicide_100k, color = age)) + geom_line(size = 2) +
             ggtitle("Evolution of the number of suicide per 100k habs between age categories.") +
             scale_color_viridis_d() +
             labs(y = "Number of suicide per 100k habs") +
-            theme_bw()
+            theme_bw() 
       }
       
-      else {
+      else{
          suicide %>% group_by(country,year,age) %>% 
             filter(country == input$country_select) %>%
             summarise(suicide_100k = sum(suicides.100k.pop)) %>% 
-            ggplot(aes(x=year,y=suicide_100k, color = age)) + geom_line(size = 1.5) +
+            ggplot(aes(x=year,y=suicide_100k, color = age)) + geom_line(size = 2) +
             ggtitle("Evolution of the number of suicide per 100k habs between age categories.") +
             scale_color_viridis_d() +
             labs(y = "Number of suicide per 100k habs") +
-            theme_bw()
+            theme_bw() 
       }
       
-   })})
+   })
    
-   observeEvent(input$generation, {output$plot_selected_generation <- renderPlotly({
+   output$plot_selected_generation <- renderPlotly({
       
       if (input$country_select == "Monde"){
          suicide %>% group_by(year,generation) %>% 
             summarise(suicide_100k = sum(suicides.100k.pop)) %>% 
-            ggplot(aes(x=year,y=suicide_100k, color = generation)) + geom_line(size = 1.5) +
+            ggplot(aes(x=year,y=suicide_100k, color = generation)) + geom_line(size = 2) +
             ggtitle("Evolution of the number of suicide per 100k habs between generations.") +
             scale_color_viridis_d() +
             labs(y = "Number of suicide per 100k habs") +
-            theme_bw()
+            theme_bw() 
       }
-      
       else {
          suicide %>% group_by(country,year,generation) %>% 
             filter(country == input$country_select) %>%
             summarise(suicide_100k = sum(suicides.100k.pop)) %>% 
-            ggplot(aes(x=year,y=suicide_100k, color = generation)) + geom_line(size = 1.5) +
+            ggplot(aes(x=year,y=suicide_100k, color = generation)) + geom_line(size = 2) +
             ggtitle("Evolution of the number of suicide per 100k habs between generations") +
             scale_color_viridis_d() +
             labs(y = "Number of suicide per 100k habs") +
-            theme_bw()
+            theme_bw() 
       }
       
-   })}) 
+   })
    
    ### Country ranking panel
    
@@ -162,7 +164,7 @@ server <- function(input,output,session)
     output$low_rank <- renderText({
        paste("This is the top ",
              input$country_number_select,
-             "country with the lowest suicide rates (per 100k habs) between",
+              "country with the lowest suicide rates (per 100k habs) between",
              input$date_length_select[1],"and",input$date_length_select[2])
     })
     
