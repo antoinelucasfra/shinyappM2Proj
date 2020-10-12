@@ -41,10 +41,10 @@ ui <- shinyUI(
                             ),
                         
                         mainPanel(
-                          h3("increasing country"),
-                          tableOutput("table_increase"),
-                          h3("decreasing country"),
-                          tableOutput("table_decrease")
+                          textOutput("high_rank"),
+                          tableOutput("table_high"),
+                          textOutput("low_rank"),
+                          tableOutput("table_low")
                         )
                       )
              ),
@@ -56,12 +56,8 @@ ui <- shinyUI(
              ),
              
              tabPanel("About",
-                      h3("This application was built for a project during a course of Data Science specialisation in Agrocampus Ouest"),
-                      HTML("<br>"),
-                      hr(),
-                      HTML("<br>"),
-                      hr(),
-                      h5("If you want to consult the source code, please refer to the following link :"),
+                      h4("This application was built for a project during a course of Data Science specialisation in Agrocampus Ouest"),
+                      h4("If you want to consult the source code, please refer to the following link :"),
                       uiOutput("tab")
               )
              )

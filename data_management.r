@@ -12,6 +12,7 @@ library(readxl)
 library(tidyverse)
 library(FactoMineR)
 library(Factoshiny)
+library(glue)
 
 # Cleanage des donnees
 
