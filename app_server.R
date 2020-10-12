@@ -45,8 +45,8 @@ server <- function(input,output,session)
             scale_color_viridis_d() +
             labs(y = "Number of suicide per 100k habs") +
             theme_bw()
-         
-   })
+         }
+      })
    
    observeEvent(input$sex, {output$plot_selected_sex <- renderPlotly({
       
