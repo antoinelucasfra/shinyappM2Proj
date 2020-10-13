@@ -4,7 +4,7 @@ ui <- shinyUI(
   navbarPage("Shiny_SuicideR",
              
              tabPanel("Suicide mapper",
-                      selectInput(inputId = "idYear", label = "Annees", 
+                      selectInput(inputId = "idYear", label = "Year", 
                                   choices = seq(1986,2016,1)),
                       leafletOutput("mymap")
              ),
@@ -58,13 +58,6 @@ ui <- shinyUI(
                                          label = "Download Selected Data")
                         )
                       )
-             ),
-             
-             tabPanel("Prediction",
-                      h3("This is a tool for approximative prediction of the amount of suicide in the next year."),
-                      tableOutput("predict_table"),
-                      plotOutput("predict_plot")
-                      
              ),
              
              tabPanel("Raw data",
