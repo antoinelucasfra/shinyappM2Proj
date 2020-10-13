@@ -1,6 +1,23 @@
-# https://www.kaggle.com/russellyates88/suicide-rates-overview-1985-to-2016
+#please setup your working directory 
+# setwd("")
 
-# Library 
+##install package if needed 
+
+if(!require(shiny)) install.packages("shiny")
+if(!require(shinydashboard)) install.packages("shinydashboard")
+if(!require(tidyverse)) install.packages("tidyverse")
+if(!require(shinyWidgets)) install.packages("shinyWidgets")
+if(!require(plotly)) install.packages("plotly")
+if(!require(readxl)) install.packages("readxl")
+if(!require(tidyverse)) install.packages("tidyverse")
+if(!require(FactoMineR)) install.packages("FactoMineR")
+if(!require(Factoshiny)) install.packages("Factoshiny")
+if(!require(glue)) install.packages("glue")
+if(!require(rgdal)) install.packages("rgdal")
+if(!require(sf)) install.packages("sf")
+if(!require(shinythemes)) install.packages("shinythemes")
+
+#load necessary packages 
 
 library(shiny)
 library(shinydashboard)
@@ -15,8 +32,9 @@ library(Factoshiny)
 library(glue)
 library(rgdal)
 library(sf)
+library(shinythemes)
 
-# Cleanage des donnees
+# data management
 
 suicide = read.csv("./data/suicide_coord.csv", sep = ";", header = T)
 
@@ -30,13 +48,5 @@ suicide$Capital.Major.City = as.factor(suicide$Capital.Major.City)
 suicide$Latitude = as.integer(suicide$Latitude)
 suicide$Longitude = as.integer(suicide$Longitude)
 
-# Define cum of suicide to plot on the map 
-
-suicide_country_cumul = suicide %>% group_by(country, year, Capital.Major.City, Latitude, Longitude) %>%
-  summarise(total_suicide = sum(suicides_no),
-            population = sum(population))
-dim(suicide_country_cumul)
-summary(suicide_country_cumul)
-
-# Importation des borders
+# Borders importation
 world <- read_sf("data/world")
