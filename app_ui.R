@@ -45,6 +45,9 @@ ui <- shinyUI(
                           sliderInput("date_length_select",
                                       "Select the interval of time:",
                                       min = 1985, max = 2016, value = c(1985,2016)),
+                          radioButtons("indicator_select","Indicator to rank countries :",
+                          c("Suicide per 100k habs","Total suicide")),
+                          
                           "Select the options to have an idea on the suicide country rankings."
                           
                         ),
