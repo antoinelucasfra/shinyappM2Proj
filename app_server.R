@@ -3,29 +3,41 @@ source("./data_management.r")
 
 server <- function(input,output,session)
 {
-   
    ### Map panel
-   
-   # Define points to print on the map
-   points <- eventReactive(input$recalc, {
-      cbind(rnorm(40) * 2 + 13, rnorm(40) + 48)
-   }, ignoreNULL = FALSE)
-   
-   output$mymap <- renderLeaflet({
-      leaflet() %>%
-         addTiles() %>%
-         
-         # addMarkers(data = points()) 
-         addCircleMarkers(
-            lng = suicide_country_cumul$Longitude[suicide_country_cumul$year == input$idYear],
-            lat =  suicide_country_cumul$Latitude[suicide_country_cumul$year == input$idYear],
-            radius = suicide_country_cumul$total_suicide[suicide_country_cumul$year == input$idYear]/500,
-            color = "red",
-            fillOpacity = 1,
-            label = paste("Pays :", suicide_country_cumul$country[suicide_country_cumul$year == input$idYear],"; Nombre de suicide :", suicide_country_cumul$total_suicide[suicide_country_cumul$year == input$idYear]),
-            labelOptions = labelOptions(textsize = "15px", direction = "auto")
-         ) 
+
+  # Reactive suicide_map
+   suicide_map = reactive({
+     suicide_year_cumul = suicide_country_cumul %>% filter(year %in% input$idYear) %>% 
+       mutate(ratio = total_suicide / population * 100000)
+     world = world %>%
+       filter(NAME %in% suicide_year_cumul$country)
+     suicide_year_cumul <- suicide_year_cumul %>%
+       mutate(country = as.character(country)) %>% 
+       filter(country %in% world$NAME)
+     
+     merge(suicide_year_cumul, world, by.x = "country", by.y = "NAME") %>% st_sf()
    })
+   
+   # Reactive my_text
+   mytext <- reactive({
+     paste(suicide_map()$country, suicide_map()$ratio)
+   })
+   
+   # Output my_map
+   output$mymap <- renderLeaflet({
+     leaflet(suicide_map()) %>%
+       addTiles() %>%
+       setView( lat=10, lng=0 , zoom=2) %>%
+       addPolygons(fillColor = ~colorNumeric(palette="Accent", domain = ratio, na.color="transparent")(ratio),
+                   stroke=FALSE,
+                   fillOpacity = 1,
+                   label = mytext(),
+                   highlight = highlightOptions(weight = 5, color = "white",
+                                                bringToFront = TRUE)) %>%
+       addLegend(pal = colorNumeric(palette="Accent", domain = suicide_map()$ratio, na.color="transparent"), values = ~ratio, opacity = 0.7, title = "suicides.100k.pop",
+                 position = "bottomright")
+   })
+   
    
    ### Plot panel
    
@@ -124,9 +136,10 @@ server <- function(input,output,session)
       
    })
    
+   
    ### Country ranking panel
    
-   #reactive definition
+   # Reactive definition
    
    low <- reactive({
       suicide %>% group_by(year,country) %>% 
@@ -148,7 +161,7 @@ server <- function(input,output,session)
          slice(1:input$country_number_select)
    })
    
-   #output definition
+   # Output definition
    
    output$high_rank<- renderText({
       paste("This is the top ",
@@ -185,14 +198,17 @@ server <- function(input,output,session)
           write.csv(all_add, file, row.names = FALSE)
        }
     )
-    
+
+        
     ### Prediction panel
+    
     
     ### Data panel
     
     output$dataTable_raw <- renderDataTable({
        suicide
     })
+    
     
     ### About panel
     

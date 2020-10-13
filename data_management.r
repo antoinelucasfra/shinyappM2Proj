@@ -35,29 +35,8 @@ suicide$Longitude = as.integer(suicide$Longitude)
 suicide_country_cumul = suicide %>% group_by(country, year, Capital.Major.City, Latitude, Longitude) %>%
   summarise(total_suicide = sum(suicides_no),
             population = sum(population))
+dim(suicide_country_cumul)
+summary(suicide_country_cumul)
 
-
-# ### Identifier les pays qui n'ont pas de donnees
-# 
-# total_countries = read.csv("Countries-of-the-world.csv", sep =";", header = TRUE)
-# total_countries_vector = as.vector(total_countries[,1])
-# 
-# year = 1990
-# 
-# dispo_countries_vector = as.vector(unique(suicide[suicide$year == year,]$country))
-# 
-# countries_dispo_or_not = total_countries_vector %in% dispo_countries_vector
-# 
-# dispo_countries = as.data.frame(dispo_countries_vector)
-# dispo_countries$latitude = total_countries$Latitude[countries_dispo_or_not]
-# dispo_countries$longitude = total_countries$Longitude[countries_dispo_or_not]
-# 
-# missing_countries_vector = total_countries_vector[!countries_dispo_or_not]
-# missing_countries = as.data.frame(missing_countries_vector)
-# missing_countries$latitude = total_countries$Latitude[!countries_dispo_or_not]
-# missing_countries$longitude = total_countries$Longitude[!countries_dispo_or_not]
-
-
-
-
-
+# Importation des borders
+world <- read_sf("data/world")
