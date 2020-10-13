@@ -14,10 +14,25 @@ ui <- fluidPage(
              
              tabPanel("Suicide mapper",
                       
-                      selectInput(inputId = "idYear", label = "Year", 
-                                  choices = seq(1990,2014,1)),
-                      
-                      leafletOutput("mymap")
+                      sidebarLayout(
+                        sidebarPanel(
+                          
+                          pickerInput("idYear", "Year:",
+                                      choices = seq(1990,2014,1),width = '60%'),
+                          
+                          "Select the country of your interest to have 
+                           a clue on suicide evolution through time between different factors."
+                        ),
+                        mainPanel(
+                          
+                          leafletOutput("mymap"),
+                          hr(),
+                          h4("Download button for the map"),
+                          downloadButton("map_dl")
+                          
+                        )
+                        
+                      )
              ),
              
              # Region plot panel

@@ -16,6 +16,8 @@ if(!require(glue)) install.packages("glue")
 if(!require(rgdal)) install.packages("rgdal")
 if(!require(sf)) install.packages("sf")
 if(!require(shinythemes)) install.packages("shinythemes")
+if(!require(mapview)) install.packages("mapview")
+
 
 #load necessary packages 
 
@@ -33,6 +35,7 @@ library(glue)
 library(rgdal)
 library(sf)
 library(shinythemes)
+library(mapview)
 
 # data management
 

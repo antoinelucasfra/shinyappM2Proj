@@ -10,7 +10,7 @@ server <- function(input,output,session)
    suicide_map <- reactive({
       
       suicide_year_cumul <- suicide %>% group_by(country,year,
-                                                Capital.Major.City,Latitude,Longitude) %>%
+                                                 Capital.Major.City,Latitude,Longitude) %>%
          summarise(total_suicide = sum(suicides_no), population = sum(population)) %>% 
          filter(year %in% input$idYear) %>% 
          mutate(ratio = total_suicide / population * 100000)
@@ -37,11 +37,11 @@ server <- function(input,output,session)
    
    # Leaflet output
    
-   output$mymap <- renderLeaflet({
+   map <- reactive({
       
       leaflet(suicide_map()) %>%
          addTiles() %>%
-         setView(lat=10,lng=0,zoom=2) %>%
+         setView(lat=46.2,lng=2.2,zoom=1.5) %>%
          addPolygons(fillColor = ~colorNumeric(palette="Reds", domain = ratio, na.color = "transparent")(ratio),
                      stroke=FALSE,
                      fillOpacity = 1,
@@ -51,9 +51,34 @@ server <- function(input,output,session)
          addLegend(pal = colorNumeric(palette="Reds", domain = suicide_map()$ratio), 
                    values = ~ratio, opacity = 0.7, title = "Suicides per 100k inhabitants",
                    position = "bottomright")
+   })
+   
+   output$mymap <- renderLeaflet({
+      
+      map()
       
    })
    
+   user_map <- reactive({
+      
+      map() %>% 
+         # store the view based on UI
+         setView(lng = input$mymap_center$lng
+                 , lat = input$mymap_center$lat
+                 , zoom = input$mymap_zoom)
+      
+   })
+   
+   output$map_dl <- downloadHandler(
+      
+      filename = "leafletmap.pdf",
+      content = function(file) {
+         mapshot( x = user_map()
+                  , file = file
+                  , cliprect = "viewport" # the clipping rectangle matches the height & width from the viewing port
+                  , selfcontained = FALSE) # when this was not specified, the function for produced a PDF of two pages: one of the leaflet map, the other a blank page.
+      }
+   )
    
    ### Plot panel
    
