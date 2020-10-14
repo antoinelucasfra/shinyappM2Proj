@@ -35,7 +35,7 @@ library(mapview)
 
 # Data management
 
-suicide = read.csv("./data/suicide_coord.csv", sep = ";", header = T)
+suicide = read.csv("data/suicide_coord.csv", sep = ";", header = T)
 
 suicide$country = as.factor(suicide$country)
 suicide$sex = as.factor(suicide$sex)
@@ -50,9 +50,6 @@ suicide$Longitude = as.integer(suicide$Longitude)
 # Borders importation
 
 world <- read_sf("data/world")
-
-
-
 
 # Please setup your working directory 
 # setwd("")
