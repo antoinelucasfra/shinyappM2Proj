@@ -116,7 +116,7 @@ ui <- fluidPage(
              
              tabPanel("Raw data",
                       
-                      h2("Raw data exploration, feel free to explore specific measures!"),
+                      h3("Raw data exploration, feel free to explore specific measures!"),
                       
                       dataTableOutput("dataTable_raw")
              ),
@@ -128,7 +128,7 @@ ui <- fluidPage(
                       h3("Explanations about the application"),
                       
                       h5("This application was built by Zoe Wante, Antoine Lucas and Chloe Tellier for a project during a course of Data Science specialisation in Agrocampus Ouest (Rennes, France)
-                         under the tutorship of Benoît Thieurmel and François Husson."),
+                         under the tutorship of Benoit Thieurmel and Francois Husson."),
                       
                       h5("The data are available at the following link:"),
                       

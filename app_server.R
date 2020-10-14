@@ -62,7 +62,7 @@ server <- function(input,output,session)
    user_map <- reactive({
       
       map() %>% 
-         # store the view based on UI
+         # Store the view based on UI
          setView(lng = input$mymap_center$lng
                  , lat = input$mymap_center$lat
                  , zoom = input$mymap_zoom)
@@ -75,8 +75,8 @@ server <- function(input,output,session)
       content = function(file) {
          mapshot( x = user_map()
                   , file = file
-                  , cliprect = "viewport" # the clipping rectangle matches the height & width from the viewing port
-                  , selfcontained = FALSE) # when this was not specified, the function for produced a PDF of two pages: one of the leaflet map, the other a blank page.
+                  , cliprect = "viewport" # The clipping rectangle matches the height & width from the viewing port
+                  , selfcontained = FALSE) # When this was not specified, the function for produced a PDF of two pages: one of the leaflet map, the other a blank page
       }
    )
    
@@ -297,13 +297,13 @@ server <- function(input,output,session)
       
       content = function(file){
          
-         #create the file to download
+         # Create the file to download
          
          low_add <- low() %>% mutate(rank_categ = rep("low",nrow(low())))
          high_add <- high() %>% mutate(rank_categ = rep("high",nrow(high())))
          all_add <- rbind(low_add,high_add)
          
-         #write the csv file
+         # Write the csv file
          
          write.csv(all_add, file, row.names = FALSE)
       }

@@ -1,7 +1,7 @@
-#please setup your working directory 
+# Please setup your working directory 
 # setwd("")
 
-##install package if needed 
+# Install package if needed 
 
 if(!require(shiny)) install.packages("shiny")
 if(!require(shinydashboard)) install.packages("shinydashboard")
@@ -18,8 +18,7 @@ if(!require(sf)) install.packages("sf")
 if(!require(shinythemes)) install.packages("shinythemes")
 if(!require(mapview)) install.packages("mapview")
 
-
-#load necessary packages 
+# Load necessary packages 
 
 library(shiny)
 library(shinydashboard)
@@ -37,7 +36,7 @@ library(sf)
 library(shinythemes)
 library(mapview)
 
-# data management
+# Data management
 
 suicide = read.csv("./data/suicide_coord.csv", sep = ";", header = T)
 
@@ -52,4 +51,5 @@ suicide$Latitude = as.integer(suicide$Latitude)
 suicide$Longitude = as.integer(suicide$Longitude)
 
 # Borders importation
+
 world <- read_sf("data/world")
