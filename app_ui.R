@@ -16,20 +16,19 @@ ui <- fluidPage(
                       
                       sidebarLayout(
                         sidebarPanel(
-                          
+                          "Select the country of your interest.",
                           pickerInput("idYear", "Year:",
                                       choices = seq(1990,2014,1),width = '60%'),
+                          "Download a pdf output of the map",
+                          downloadButton("map_dl"),
                           
-                          "Select the country of your interest to have 
-                           a clue on suicide evolution through time between different factors."
                         ),
+                        
                         mainPanel(
                           
-                          leafletOutput("mymap"),
-                          hr(),
-                          h4("Download button for the map"),
-                          downloadButton("map_dl")
-                          
+                          h3("Worldwide map for suicide data"),
+                          leafletOutput("mymap")
+
                         )
                         
                       )
@@ -77,7 +76,7 @@ ui <- fluidPage(
                       sidebarLayout(
                         
                         sidebarPanel(
-                          
+                          "Select the options to have an idea on the suicide country rankings.",
                           numericInput("country_number_select",
                                        "Select the number of country you want in the top:",
                                        value = 5, min = 1, max = length(unique(suicide$country)),
@@ -90,7 +89,9 @@ ui <- fluidPage(
                           radioButtons("indicator_select",
                                        "Indicator to rank countries :",
                                        c("suicide rates per 100k habs","average number of suicide")),
-                          "Select the options to have an idea on the suicide country rankings."
+                          "Press below to download selected data",
+                          downloadButton(outputId = "download_data", 
+                                         label = "Download Selected Data")
                           
                         ),
                         
@@ -104,10 +105,7 @@ ui <- fluidPage(
                           
                           textOutput("low_rank"),
                           
-                          tableOutput("table_low"),
-                          
-                          downloadButton(outputId = "download_data", 
-                                         label = "Download Selected Data")
+                          tableOutput("table_low")
                         )
                       )
              ),
@@ -116,7 +114,7 @@ ui <- fluidPage(
              
              tabPanel("Raw data",
                       
-                      h3("Raw data exploration, feel free to explore specific measures!"),
+                      h3("Raw data exploration, feel free to explore it!"),
                       
                       dataTableOutput("dataTable_raw")
              ),
