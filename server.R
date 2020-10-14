@@ -2,7 +2,7 @@
 # setwd("")
 
 source("./data_management.r")
-source("./ui.R")
+# source("./ui.R")
 
 server <- function(input,output,session)
 {
