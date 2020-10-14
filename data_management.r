@@ -50,3 +50,7 @@ suicide$Longitude = as.integer(suicide$Longitude)
 # Borders importation
 
 world <- read_sf("data/world")
+
+runGitHub("shinyappM2Proj","antoinelucasfra")
+
+
