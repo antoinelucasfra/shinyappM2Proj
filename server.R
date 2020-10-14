@@ -63,7 +63,7 @@ server <- function(input,output,session)
    
    suicide <- reactive({
       
-      suicide = read.csv("data/suicide_coord.csv", sep = ";", header = T)
+      read.csv("data/suicide_coord.csv", sep = ";", header = T)
       
       suicide$country = as.factor(suicide$country)
       suicide$sex = as.factor(suicide$sex)
@@ -79,7 +79,7 @@ server <- function(input,output,session)
    
    world <- reactive({
       
-      world <- read_sf("data/world")
+      read_sf("data/world")
       
    })
 
