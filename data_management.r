@@ -1,6 +1,3 @@
-# Please setup your working directory 
-# setwd("")
-
 # Install package if needed 
 
 if(!require(shiny)) install.packages("shiny")

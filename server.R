@@ -1,3 +1,6 @@
+# Please setup your working directory 
+# setwd("")
+
 source("./data_management.r")
 source("./ui.R")
 

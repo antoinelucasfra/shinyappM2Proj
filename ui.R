@@ -16,10 +16,12 @@ ui <- fluidPage(
                       
                       sidebarLayout(
                         sidebarPanel(
-                          "Select the country of your interest.",
+                          h4("Select the year of your interest."),
+                          hr(),
                           pickerInput("idYear", "Year:",
                                       choices = seq(1990,2014,1),width = '60%'),
-                          "Download a pdf output of the map",
+                          hr(),
+                          "Press below to download a pdf output of the map:",
                           downloadButton("map_dl"),
                           
                         ),
@@ -41,12 +43,13 @@ ui <- fluidPage(
                       sidebarLayout(
                         
                         sidebarPanel(
-                          
+                          h4("Select the country of your interest to have 
+                           a clue on suicide evolution through time between different factors."),
+                          hr(),
                           pickerInput("country_select", "Country:",
                                       choices = c("Monde",levels(suicide$country)),
                                       multiple = FALSE),
-                          "Select the country of your interest to have 
-                           a clue on suicide evolution through time between different factors."
+                          
                         ),
                         
                         mainPanel(
@@ -76,7 +79,8 @@ ui <- fluidPage(
                       sidebarLayout(
                         
                         sidebarPanel(
-                          "Select the options to have an idea on the suicide country rankings.",
+                          h4("Select the options to have an idea on the suicide country rankings."),
+                          hr(),
                           numericInput("country_number_select",
                                        "Select the number of country you want in the top:",
                                        value = 5, min = 1, max = length(unique(suicide$country)),
@@ -89,9 +93,10 @@ ui <- fluidPage(
                           radioButtons("indicator_select",
                                        "Indicator to rank countries :",
                                        c("suicide rates per 100k habs","average number of suicide")),
+                          hr(),
                           "Press below to download selected data",
                           downloadButton(outputId = "download_data", 
-                                         label = "Download Selected Data")
+                                         label = "Download Selected Data:")
                           
                         ),
                         
