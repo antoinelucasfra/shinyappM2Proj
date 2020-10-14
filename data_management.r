@@ -51,6 +51,3 @@ suicide$Longitude = as.integer(suicide$Longitude)
 
 world <- read_sf("data/world")
 
-runGitHub("shinyappM2Proj","antoinelucasfra")
-
-
