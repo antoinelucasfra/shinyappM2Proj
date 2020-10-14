@@ -1,101 +1,25 @@
-# Install package if needed 
-
-if(!require(shiny)) install.packages("shiny")
-if(!require(shinydashboard)) install.packages("shinydashboard")
-if(!require(tidyverse)) install.packages("tidyverse")
-if(!require(shinyWidgets)) install.packages("shinyWidgets")
-if(!require(plotly)) install.packages("plotly")
-if(!require(readxl)) install.packages("readxl")
-if(!require(tidyverse)) install.packages("tidyverse")
-if(!require(FactoMineR)) install.packages("FactoMineR")
-if(!require(Factoshiny)) install.packages("Factoshiny")
-if(!require(glue)) install.packages("glue")
-if(!require(rgdal)) install.packages("rgdal")
-if(!require(sf)) install.packages("sf")
-if(!require(shinythemes)) install.packages("shinythemes")
-if(!require(mapview)) install.packages("mapview")
-
-# Load necessary packages 
-
-library(shiny)
-library(shinydashboard)
-library(tidyverse)
-library(leaflet)
-library(shinyWidgets)
-library(plotly)
-library(readxl)
-library(tidyverse)
-library(FactoMineR)
-library(Factoshiny)
-library(glue)
-library(rgdal)
-library(sf)
-library(shinythemes)
-library(mapview)
-
-# Data management
-
-suicide = read.csv("data/suicide_coord.csv", sep = ";", header = T)
-
-suicide$country = as.factor(suicide$country)
-suicide$sex = as.factor(suicide$sex)
-suicide$age = as.factor( suicide$age)
-suicide$age <- factor(suicide$age,levels = c("5-14 years","15-24 years",
-                                             "25-34 years","35-54 years","55-74 years","75+ years"))
-suicide$generation = as.factor(suicide$generation)
-suicide$Capital.Major.City = as.factor(suicide$Capital.Major.City)
-suicide$Latitude = as.integer(suicide$Latitude)
-suicide$Longitude = as.integer(suicide$Longitude)
-
-# Borders importation
-
-world <- read_sf("data/world")
-
 # Please setup your working directory 
 # setwd("")
 
-# source("data_management.r")
-# source("./ui.R")
+source("./data_management.r")
+source("./ui.R")
 
 server <- function(input,output,session)
 {
-   ### Data Import
    
-   suicide <- reactive({
-      
-      read.csv("data/suicide_coord.csv", sep = ";", header = T)
-      
-      suicide$country = as.factor(suicide$country)
-      suicide$sex = as.factor(suicide$sex)
-      suicide$age = as.factor( suicide$age)
-      suicide$age <- factor(suicide$age,levels = c("5-14 years","15-24 years",
-                                                   "25-34 years","35-54 years","55-74 years","75+ years"))
-      suicide$generation = as.factor(suicide$generation)
-      suicide$Capital.Major.City = as.factor(suicide$Capital.Major.City)
-      suicide$Latitude = as.integer(suicide$Latitude)
-      suicide$Longitude = as.integer(suicide$Longitude)
-      
-   })
-   
-   world <- reactive({
-      
-      read_sf("data/world")
-      
-   })
-
    ### Map panel
    
    # Reactive dataframe for leaflet output
    
    suicide_map <- reactive({
       
-      suicide_year_cumul <- suicide() %>% group_by(country,year,
+      suicide_year_cumul <- suicide %>% group_by(country,year,
                                                  Capital.Major.City,Latitude,Longitude) %>%
          summarise(total_suicide = sum(suicides_no), population = sum(population)) %>% 
          filter(year %in% input$idYear) %>% 
          mutate(ratio = total_suicide / population * 100000)
       
-      world <- world() %>%
+      world <- world %>%
          filter(NAME %in% suicide_year_cumul$country)
       
       suicide_year_cumul <- suicide_year_cumul %>%
@@ -421,3 +345,11 @@ server <- function(input,output,session)
       
    })
 }
+
+#lauch app
+
+shinyApp(ui,server)
+
+
+
+
