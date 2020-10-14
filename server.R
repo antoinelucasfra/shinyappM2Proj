@@ -54,24 +54,48 @@ world <- read_sf("data/world")
 # Please setup your working directory 
 # setwd("")
 
-source("data_management.r")
+# source("data_management.r")
 # source("./ui.R")
 
 server <- function(input,output,session)
 {
+   ### Data Import
+   
+   suicide <- reactive({
+      
+      suicide = read.csv("data/suicide_coord.csv", sep = ";", header = T)
+      
+      suicide$country = as.factor(suicide$country)
+      suicide$sex = as.factor(suicide$sex)
+      suicide$age = as.factor( suicide$age)
+      suicide$age <- factor(suicide$age,levels = c("5-14 years","15-24 years",
+                                                   "25-34 years","35-54 years","55-74 years","75+ years"))
+      suicide$generation = as.factor(suicide$generation)
+      suicide$Capital.Major.City = as.factor(suicide$Capital.Major.City)
+      suicide$Latitude = as.integer(suicide$Latitude)
+      suicide$Longitude = as.integer(suicide$Longitude)
+      
+   })
+   
+   world <- reactive({
+      
+      world <- read_sf("data/world")
+      
+   })
+
    ### Map panel
    
    # Reactive dataframe for leaflet output
    
    suicide_map <- reactive({
       
-      suicide_year_cumul <- suicide %>% group_by(country,year,
+      suicide_year_cumul <- suicide() %>% group_by(country,year,
                                                  Capital.Major.City,Latitude,Longitude) %>%
          summarise(total_suicide = sum(suicides_no), population = sum(population)) %>% 
          filter(year %in% input$idYear) %>% 
          mutate(ratio = total_suicide / population * 100000)
       
-      world <- world %>%
+      world <- world() %>%
          filter(NAME %in% suicide_year_cumul$country)
       
       suicide_year_cumul <- suicide_year_cumul %>%
