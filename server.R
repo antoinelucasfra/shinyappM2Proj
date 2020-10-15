@@ -349,7 +349,3 @@ server <- function(input,output,session)
 #lauch app
 
 shinyApp(ui,server)
-
-
-
-

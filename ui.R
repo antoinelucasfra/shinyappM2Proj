@@ -88,15 +88,15 @@ ui <- fluidPage(
                           
                           sliderInput("date_length_select",
                                       "Select the interval of time:",
-                                      min = 1985, max = 2016, value = c(1985,2016)),
+                                      min = 1990, max = 2014, value = c(1990,2014)),
                           
                           radioButtons("indicator_select",
                                        "Indicator to rank countries :",
                                        c("suicide rates per 100k habs","average number of suicide")),
                           hr(),
-                          "Press below to download selected data",
+                          "Press below to download selected data:",
                           downloadButton(outputId = "download_data", 
-                                         label = "Download Selected Data:")
+                                         label = "Download Selected Data")
                           
                         ),
                         
@@ -128,19 +128,6 @@ ui <- fluidPage(
              
              tabPanel("About",
                       
-                      h3("Explanations about the application"),
-                      
-                      h5("This application was built by Zoe Wante, Antoine Lucas and Chloe Tellier for a project during a course of Data Science specialisation in Agrocampus Ouest (Rennes, France)
-                         under the tutorship of Benoit Thieurmel and Francois Husson."),
-                      
-                      h5("The data are available at the following link:"),
-                      
-                      uiOutput("link_data"),
-                      
-                      h5("If you want to consult the source code, please refer to the following link :"),
-                      
-                      uiOutput("git_repo"),
-                      
                       h3("Analysis and critic"),
                       
                       h5("Our dataset is not ideal:"),
@@ -150,6 +137,18 @@ ui <- fluidPage(
                       h5("- Moreover, it would be useful to have more indicators about each country, about economy, social or health system for instance
                       in order to make a prediction model for the evolution of the number of suicides in the world."),
                       
+                      h3("Explanations about the application"),
+                      
+                      h5("This application was built by Zoe Wante, Antoine Lucas and Chloe Tellier for a project during a course of Data Science specialisation in Agrocampus Ouest (Rennes, France)
+                         under the tutorship of Benoit Thieurmel and Francois Husson."),
+                      
+                      h5("The data are available at the following link:"),
+                      
+                      uiOutput("link_data"),
+                      
+                      h5("If you want to consult the source code, please refer to the following link:"),
+                      
+                      uiOutput("git_repo")
              )
   )
 )
