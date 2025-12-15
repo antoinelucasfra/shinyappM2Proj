@@ -34,16 +34,6 @@ source("app.R")
 - `ui.R` and `server.R`: Shiny UI and server code.
 - `setup.R`: installs package dependencies.
 
-## Improvements made
-- Removed automatic package installation from data-loading code and made installation explicit in `setup.R`.
-- Added `global.R` and `app.R` to provide a clear app entry point and reliable startup ordering.
-- Improved data parsing (use `readr::read_csv2`) and type conversions (Latitude/Longitude -> numeric).
-- Added basic data validation with clear error messages when required files/columns are missing.
-- Updated `ui.R` to generate choices dynamically from data instead of hard-coded ranges.
-- Added guidance in README on how to install dependencies and run the app.
-
 ## Notes and known issues
 - If you encounter errors installing `sf`, please install system dependencies for GDAL/PROJ for your OS first.
 - Consider using `renv` to lock package versions for reproducibility.
-
-If you'd like, I can also add a small vignette or convert this repo to an R package with `renv` support.
