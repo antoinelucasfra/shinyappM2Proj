@@ -43,6 +43,7 @@ This app can be easily deployed on any server using Docker. This is the recommen
 #### Prerequisites
 - Docker installed on your server
 - Docker Compose (optional, but recommended)
+- Internet connection for building the image (to download R packages)
 
 #### Option 1: Using Docker Compose (Easiest)
 
@@ -57,11 +58,18 @@ cd shinyappM2Proj
 docker-compose up -d
 ```
 
+The first build will take 5-10 minutes as it installs all R packages. Subsequent runs will be much faster.
+
 3. The app will be available at `http://your-server-ip:3838`
 
 4. To stop the app:
 ```bash
 docker-compose down
+```
+
+5. To view logs:
+```bash
+docker-compose logs -f
 ```
 
 #### Option 2: Using Docker directly
@@ -77,6 +85,11 @@ docker run -d -p 3838:3838 --name shiny-app shiny-suicide-stats
 ```
 
 3. The app will be available at `http://your-server-ip:3838`
+
+4. To view logs:
+```bash
+docker logs -f shiny-app
+```
 
 #### Production Deployment Tips
 
@@ -109,6 +122,8 @@ server {
 
 3. **For automatic restarts**, the docker-compose.yml includes `restart: unless-stopped`
 
+4. **Monitor resource usage**: The app may require 512MB-1GB RAM depending on usage
+
 ### shinyapps.io Deployment (Alternative)
 
 You can also deploy to Posit's shinyapps.io:
@@ -118,7 +133,7 @@ You can also deploy to Posit's shinyapps.io:
 install.packages('rsconnect')
 ```
 
-2. Configure your shinyapps.io account:
+2. Configure your shinyapps.io account (get credentials from https://www.shinyapps.io/admin/#/tokens):
 ```r
 rsconnect::setAccountInfo(name='<ACCOUNT>', token='<TOKEN>', secret='<SECRET>')
 ```
@@ -127,6 +142,32 @@ rsconnect::setAccountInfo(name='<ACCOUNT>', token='<TOKEN>', secret='<SECRET>')
 ```r
 rsconnect::deployApp()
 ```
+
+## Troubleshooting
+
+### Docker Build Issues
+
+**Problem**: Packages fail to install during `docker build`
+- **Solution**: Ensure your server has internet access. The build process downloads R packages from CRAN.
+
+**Problem**: "sf" package installation fails
+- **Solution**: The Dockerfile includes all necessary system dependencies (gdal, proj, geos). If issues persist, ensure you're using a recent Docker version.
+
+**Problem**: Build takes too long
+- **Solution**: The first build takes 5-10 minutes to install all R packages. This is normal. Use Docker layer caching to speed up subsequent builds.
+
+### Runtime Issues
+
+**Problem**: App won't start or shows errors in logs
+- **Solution**: Check logs with `docker logs <container-name>`. Common issues:
+  - Missing data files: Ensure `data/suicide_coord.csv` exists
+  - Port already in use: Change the port mapping in docker-compose.yml or `docker run` command
+
+**Problem**: Can't access app from outside the server
+- **Solution**: 
+  - Check firewall rules allow port 3838
+  - For cloud servers (AWS, GCP, Azure), configure security groups
+  - Consider using a reverse proxy (nginx) for production
 
 ## Notes and known issues
 - If you encounter errors installing `sf`, please install system dependencies for GDAL/PROJ for your OS first.

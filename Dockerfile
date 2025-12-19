@@ -19,7 +19,8 @@ WORKDIR /srv/shiny-server/shinyappM2Proj
 COPY . .
 
 # Install R package dependencies
-RUN R -e "source('setup.R')"
+# Force installation by running install.packages directly instead of relying on setup.R
+RUN R -e "install.packages(c('shiny', 'shinythemes', 'shinyWidgets', 'shinydashboard', 'tidyverse', 'leaflet', 'plotly', 'sf', 'mapview', 'readxl'), repos='https://cloud.r-project.org/', dependencies=TRUE)"
 
 # Copy custom Shiny Server configuration
 COPY shiny-server.conf /etc/shiny-server/shiny-server.conf
