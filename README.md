@@ -2,9 +2,13 @@
 
 This repository contains a Shiny application (Suicide statistics explorer) developed as part of a Master 2 course at Agrocampus Ouest by Zoe Wante, Antoine Lucas and Chloe Tellier.
 
+**🚀 Want to deploy this app to your personal website?** See the [DEPLOYMENT.md](DEPLOYMENT.md) guide for step-by-step instructions!
+
 ## What is included
 - A Shiny app that visualises suicide counts and rates by country, year, sex, age, and generation.
 - Data used: `data/suicide_coord.csv` and world borders shapefile in `data/world/`.
+- Docker configuration for easy deployment to any server
+- Comprehensive deployment documentation
 
 ## Quick start
 1. Open an R session in the project root (or use RStudio).

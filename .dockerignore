@@ -9,9 +9,8 @@
 .Ruserdata
 *.Rproj
 
-# Documentation
-*.md
-!README.md
+# Documentation (keep README.md for reference)
+DEPLOYMENT.md
 
 # Temporary files
 *.tmp
@@ -23,3 +22,8 @@
 # IDE
 .vscode
 .idea
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
