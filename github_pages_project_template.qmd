@@ -47,10 +47,10 @@ Browse and search the complete dataset with an interactive data table supporting
 The application may take 10-15 seconds to load on first access as it wakes up from sleep mode (free tier limitation).
 :::
 
-<iframe src="https://YOUR-ACCOUNT.shinyapps.io/suicide-statistics-explorer/" width="100%" height="800px" style="border: 1px solid #ccc; border-radius: 4px; margin-top: 20px;"></iframe>
+<iframe src="https://<your-account-name>.shinyapps.io/suicide-statistics-explorer/" width="100%" height="800px" style="border: 1px solid #ccc; border-radius: 4px; margin-top: 20px;"></iframe>
 
 <div style="margin-top: 20px; text-align: center;">
-  <a href="https://YOUR-ACCOUNT.shinyapps.io/suicide-statistics-explorer/" class="btn btn-primary" target="_blank">
+  <a href="https://<your-account-name>.shinyapps.io/suicide-statistics-explorer/" class="btn btn-primary" target="_blank">
     <i class="bi bi-box-arrow-up-right"></i> Open in New Window
   </a>
   <a href="https://github.com/antoinelucasfra/shinyappM2Proj" class="btn btn-secondary" target="_blank">
