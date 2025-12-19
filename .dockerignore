@@ -23,7 +23,6 @@ DEPLOYMENT.md
 .vscode
 .idea
 
-# Docker
-Dockerfile
+# Docker (keep Dockerfile for build context)
 docker-compose.yml
 .dockerignore

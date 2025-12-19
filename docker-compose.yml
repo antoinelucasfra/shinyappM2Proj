@@ -5,10 +5,9 @@ services:
     build: .
     ports:
       - "3838:3838"
-    volumes:
-      # Mount the app directory for development (optional)
-      # Comment out for production deployment
-      - ./:/srv/shiny-server/shinyappM2Proj
+    # For development: uncomment the volumes section below to enable live code reloading
+    # volumes:
+    #   - ./:/srv/shiny-server/shinyappM2Proj
     restart: unless-stopped
     environment:
       - APPLICATION_LOGS_TO_STDOUT=true
