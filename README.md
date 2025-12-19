@@ -34,6 +34,101 @@ source("app.R")
 - `ui.R` and `server.R`: Shiny UI and server code.
 - `setup.R`: installs package dependencies.
 
+## Deployment
+
+### Docker Deployment (Recommended for Personal Website)
+
+This app can be easily deployed on any server using Docker. This is the recommended approach for deploying to a personal website.
+
+#### Prerequisites
+- Docker installed on your server
+- Docker Compose (optional, but recommended)
+
+#### Option 1: Using Docker Compose (Easiest)
+
+1. Clone this repository to your server:
+```bash
+git clone https://github.com/antoinelucasfra/shinyappM2Proj.git
+cd shinyappM2Proj
+```
+
+2. Build and run the container:
+```bash
+docker-compose up -d
+```
+
+3. The app will be available at `http://your-server-ip:3838`
+
+4. To stop the app:
+```bash
+docker-compose down
+```
+
+#### Option 2: Using Docker directly
+
+1. Build the Docker image:
+```bash
+docker build -t shiny-suicide-stats .
+```
+
+2. Run the container:
+```bash
+docker run -d -p 3838:3838 --name shiny-app shiny-suicide-stats
+```
+
+3. The app will be available at `http://your-server-ip:3838`
+
+#### Production Deployment Tips
+
+For production deployment on your personal website:
+
+1. **Use a reverse proxy** (nginx or Apache) to:
+   - Serve the app on port 80/443 instead of 3838
+   - Add SSL/TLS certificates for HTTPS
+   - Set up a custom domain
+
+2. **Example nginx configuration**:
+```nginx
+server {
+    listen 80;
+    server_name your-domain.com;
+
+    location / {
+        proxy_pass http://localhost:3838;
+        proxy_redirect off;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+3. **For automatic restarts**, the docker-compose.yml includes `restart: unless-stopped`
+
+### shinyapps.io Deployment (Alternative)
+
+You can also deploy to Posit's shinyapps.io:
+
+1. Install rsconnect:
+```r
+install.packages('rsconnect')
+```
+
+2. Configure your shinyapps.io account:
+```r
+rsconnect::setAccountInfo(name='<ACCOUNT>', token='<TOKEN>', secret='<SECRET>')
+```
+
+3. Deploy the app:
+```r
+rsconnect::deployApp()
+```
+
 ## Notes and known issues
 - If you encounter errors installing `sf`, please install system dependencies for GDAL/PROJ for your OS first.
 - Consider using `renv` to lock package versions for reproducibility.
+- The Docker image includes all necessary system dependencies for the `sf` package.

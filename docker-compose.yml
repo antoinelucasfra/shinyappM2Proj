@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  shiny-app:
+    build: .
+    ports:
+      - "3838:3838"
+    volumes:
+      # Mount the app directory for development (optional)
+      # Comment out for production deployment
+      - ./:/srv/shiny-server/shinyappM2Proj
+    restart: unless-stopped
+    environment:
+      - APPLICATION_LOGS_TO_STDOUT=true

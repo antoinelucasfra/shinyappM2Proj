@@ -1,0 +1,25 @@
+# Git
+.git
+.gitignore
+
+# R
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# Documentation
+*.md
+!README.md
+
+# Temporary files
+*.tmp
+*.log
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode
+.idea
