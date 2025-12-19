@@ -2,13 +2,13 @@
 
 This repository contains a Shiny application (Suicide statistics explorer) developed as part of a Master 2 course at Agrocampus Ouest by Zoe Wante, Antoine Lucas and Chloe Tellier.
 
-**🚀 Want to deploy this app to your personal website?** See the [DEPLOYMENT.md](DEPLOYMENT.md) guide for step-by-step instructions!
+**🚀 Want to deploy this app to your personal website (GitHub Pages)?** See [DEPLOYMENT_GITHUB_PAGES.md](DEPLOYMENT_GITHUB_PAGES.md) for complete instructions on deploying to shinyapps.io and integrating with your GitHub Pages site!
 
 ## What is included
 - A Shiny app that visualises suicide counts and rates by country, year, sex, age, and generation.
 - Data used: `data/suicide_coord.csv` and world borders shapefile in `data/world/`.
-- Docker configuration for easy deployment to any server
-- Comprehensive deployment documentation
+- Easy deployment script for shinyapps.io (`deploy_to_shinyapps.R`)
+- Project template for GitHub Pages integration (`github_pages_project_template.qmd`)
 
 ## Quick start
 1. Open an R session in the project root (or use RStudio).
@@ -37,143 +37,32 @@ source("app.R")
 - `data_management.R`: data parsing and validation helpers.
 - `ui.R` and `server.R`: Shiny UI and server code.
 - `setup.R`: installs package dependencies.
+- `deploy_to_shinyapps.R`: deployment script for shinyapps.io.
+- `github_pages_project_template.qmd`: template for adding the app to a Quarto-based GitHub Pages site.
 
 ## Deployment
 
-### Docker Deployment (Recommended for Personal Website)
+### Deploy to shinyapps.io
 
-This app can be easily deployed on any server using Docker. This is the recommended approach for deploying to a personal website.
+The easiest way to make your Shiny app accessible online (and integrate it with GitHub Pages):
 
-#### Prerequisites
-- Docker installed on your server
-- Docker Compose (optional, but recommended)
-- Internet connection for building the image (to download R packages)
-
-#### Option 1: Using Docker Compose (Easiest)
-
-1. Clone this repository to your server:
-```bash
-git clone https://github.com/antoinelucasfra/shinyappM2Proj.git
-cd shinyappM2Proj
-```
-
-2. Build and run the container:
-```bash
-docker-compose up -d
-```
-
-The first build will take 5-10 minutes as it installs all R packages. Subsequent runs will be much faster.
-
-3. The app will be available at `http://your-server-ip:3838`
-
-4. To stop the app:
-```bash
-docker-compose down
-```
-
-5. To view logs:
-```bash
-docker-compose logs -f
-```
-
-#### Option 2: Using Docker directly
-
-1. Build the Docker image:
-```bash
-docker build -t shiny-suicide-stats .
-```
-
-2. Run the container:
-```bash
-docker run -d -p 3838:3838 --name shiny-app shiny-suicide-stats
-```
-
-3. The app will be available at `http://your-server-ip:3838`
-
-4. To view logs:
-```bash
-docker logs -f shiny-app
-```
-
-#### Production Deployment Tips
-
-For production deployment on your personal website:
-
-1. **Use a reverse proxy** (nginx or Apache) to:
-   - Serve the app on port 80/443 instead of 3838
-   - Add SSL/TLS certificates for HTTPS
-   - Set up a custom domain
-
-2. **Example nginx configuration**:
-```nginx
-server {
-    listen 80;
-    server_name your-domain.com;
-
-    location / {
-        proxy_pass http://localhost:3838;
-        proxy_redirect off;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-```
-
-3. **For automatic restarts**, the docker-compose.yml includes `restart: unless-stopped`
-
-4. **Monitor resource usage**: The app may require 512MB-1GB RAM depending on usage
-
-### shinyapps.io Deployment (Alternative)
-
-You can also deploy to Posit's shinyapps.io:
-
-1. Install rsconnect:
+1. Install and configure rsconnect:
 ```r
 install.packages('rsconnect')
-```
-
-2. Configure your shinyapps.io account (get credentials from https://www.shinyapps.io/admin/#/tokens):
-```r
 rsconnect::setAccountInfo(name='<ACCOUNT>', token='<TOKEN>', secret='<SECRET>')
 ```
+Get your credentials from https://www.shinyapps.io/admin/#/tokens
 
-3. Deploy the app:
+2. Run the deployment script:
 ```r
-rsconnect::deployApp()
+source("deploy_to_shinyapps.R")
 ```
 
-## Troubleshooting
+3. Your app will be deployed to: `https://<your-account>.shinyapps.io/suicide-statistics-explorer/`
 
-### Docker Build Issues
-
-**Problem**: Packages fail to install during `docker build`
-- **Solution**: Ensure your server has internet access. The build process downloads R packages from CRAN.
-
-**Problem**: "sf" package installation fails
-- **Solution**: The Dockerfile includes all necessary system dependencies (gdal, proj, geos). If issues persist, ensure you're using a recent Docker version.
-
-**Problem**: Build takes too long
-- **Solution**: The first build takes 5-10 minutes to install all R packages. This is normal. Use Docker layer caching to speed up subsequent builds.
-
-### Runtime Issues
-
-**Problem**: App won't start or shows errors in logs
-- **Solution**: Check logs with `docker logs <container-name>`. Common issues:
-  - Missing data files: Ensure `data/suicide_coord.csv` exists
-  - Port already in use: Change the port mapping in docker-compose.yml or `docker run` command
-
-**Problem**: Can't access app from outside the server
-- **Solution**: 
-  - Check firewall rules allow port 3838
-  - For cloud servers (AWS, GCP, Azure), configure security groups
-  - Consider using a reverse proxy (nginx) for production
+For detailed instructions on integrating with your GitHub Pages website, see [DEPLOYMENT_GITHUB_PAGES.md](DEPLOYMENT_GITHUB_PAGES.md).
 
 ## Notes and known issues
 - If you encounter errors installing `sf`, please install system dependencies for GDAL/PROJ for your OS first.
 - Consider using `renv` to lock package versions for reproducibility.
-- The Docker image includes all necessary system dependencies for the `sf` package.
+- **GitHub Pages limitation**: GitHub Pages only serves static files and cannot run Shiny apps directly. Use shinyapps.io (free tier available) to host the app, then embed or link it from your GitHub Pages site.
