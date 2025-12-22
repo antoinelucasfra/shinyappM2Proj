@@ -1,5 +1,7 @@
 # shinyappM2Proj
 
+[![Deploy to Posit Connect Cloud](https://github.com/antoinelucasfra/shinyappM2Proj/actions/workflows/deploy-to-connect.yaml/badge.svg)](https://github.com/antoinelucasfra/shinyappM2Proj/actions/workflows/deploy-to-connect.yaml)
+
 This repository contains a Shiny application (Suicide statistics explorer) developed as part of a Master 2 course at Agrocampus Ouest by Zoe Wante, Antoine Lucas and Chloe Tellier.
 
 ## What is included
@@ -37,3 +39,19 @@ source("app.R")
 ## Notes and known issues
 - If you encounter errors installing `sf`, please install system dependencies for GDAL/PROJ for your OS first.
 - Consider using `renv` to lock package versions for reproducibility.
+
+## Deployment
+
+This app is automatically deployed to [Posit Connect Cloud](https://connect.posit.cloud/antoinelucasfra) when pushing to the `main` branch.
+
+### Setting up deployment
+
+1. Go to [Posit Connect Cloud](https://connect.posit.cloud/antoinelucasfra) and sign in
+2. Generate an API key from your account settings
+3. Add the API key as a GitHub repository secret named `POSIT_CONNECT_API_KEY`:
+   - Go to repository Settings → Secrets and variables → Actions
+   - Click "New repository secret"
+   - Name: `POSIT_CONNECT_API_KEY`
+   - Value: your API key from Posit Connect Cloud
+
+The deployment workflow will run automatically on each push to `main`, or can be triggered manually from the Actions tab.
